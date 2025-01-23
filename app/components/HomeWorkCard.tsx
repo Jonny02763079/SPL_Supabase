@@ -1,13 +1,15 @@
 import React from 'react'
 import './HomeWorkCard.css';
+import { Button } from '@mui/material';
 
 
-type props = {
+type HomeWorkCardProps = {
     homeWorkName: string;
     homeWorkDescription: string;
-}
+    onDelete: () => void;
+};
 
-export default function HomeWorkCard({ homeWorkName, homeWorkDescription }: props) {
+export default function HomeWorkCard({ homeWorkName, homeWorkDescription, onDelete }: HomeWorkCardProps) {
     return (
         <div className='homework-card '>
             <div className='headline'>
@@ -15,6 +17,16 @@ export default function HomeWorkCard({ homeWorkName, homeWorkDescription }: prop
             </div>
             <div className='description'>
                 {homeWorkDescription}
+            </div>
+            <div>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={onDelete}
+                    style={{ marginTop: "16px" }}
+                >
+                    Löschen
+                </Button>
             </div>
         </div>
     )

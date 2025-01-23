@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { createClient } from "@supabase/supabase-js";
 import HomeWorkCard from "./components/HomeWorkCard";
+import style from './page.module.css'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -21,9 +22,9 @@ const supabase = createClient(
 );
 
 export default function Home() {
-  const [subjects, setSubjects] = useState<unknown[]>([]);
+  const [subjects, setSubjects] = useState<any[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string>("");
-  const [homeworks, setHomeworks] = useState<unknown[]>([]);
+  const [homeworks, setHomeworks] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
   const [newHomework, setNewHomework] = useState({
     subject_fk: "",
@@ -87,12 +88,26 @@ export default function Home() {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    const { data, error } = await supabase
+      .from("homework")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error deleting homework:", error);
+    } else {
+      console.log("Homework deleted:", data);
+      setHomeworks((prev) => prev.filter((homework) => homework.id !== id));
+    }
+  };
+
   return (
     <div>
-      <div className="headline">
+      <div className={style["headline"]}>
         <h1>HTL Dornbirn Hausaufgaben</h1>
       </div>
-      <div className="filter">
+      <div className={style["filter"]}>
         <FormControl fullWidth>
           <InputLabel>Fach</InputLabel>
           <Select
@@ -116,14 +131,17 @@ export default function Home() {
           Hausaufgaben hinzufügen
         </Button>
       </div>
-      <div>
+      <div className={style["main-container-homework"]}>
         {homeworks.length > 0 ? (
-          homeworks.map((homework) => (
-            <HomeWorkCard
-              key={homework.id}
-              homeWorkName={homework.short_description}
-              homeWorkDescription={homework.content}
-            />
+          homeworks.map((homework: any) => (
+            <div className={style["homework-container"]} key={homework.id}>
+              <HomeWorkCard
+                key={homework.id}
+                homeWorkName={homework.short_description}
+                homeWorkDescription={homework.content}
+                onDelete={() => handleDelete(homework.id)}
+              />
+            </div>
           ))
         ) : (
           <p>Keine Hausaufgaben gefunden.</p>
@@ -167,15 +185,15 @@ export default function Home() {
             multiline
             rows={4}
           />
+          <div className={style["button-container-dialog"]}>
+            <Button onClick={handleClose} color="secondary">
+              Abbrechen
+            </Button>
+            <Button onClick={handleSubmit} color="primary" variant="contained">
+              Hinzufügen
+            </Button>
+          </div>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-            Abbrechen
-          </Button>
-          <Button onClick={handleSubmit} color="primary" variant="contained">
-            Hinzufügen
-          </Button>
-        </DialogActions>
       </Dialog>
     </div>
   );

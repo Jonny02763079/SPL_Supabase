@@ -5,7 +5,7 @@
   padding: 16px;
   margin: 16px 0;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  max-width: 400px;
+  min-width: 400px;
 }
 
 .homework-card:hover {

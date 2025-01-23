@@ -21,9 +21,9 @@ const supabase = createClient(
 );
 
 export default function Home() {
-  const [subjects, setSubjects] = useState<any[]>([]);
+  const [subjects, setSubjects] = useState<unknown[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string>("");
-  const [homeworks, setHomeworks] = useState<any[]>([]);
+  const [homeworks, setHomeworks] = useState<unknown[]>([]);
   const [open, setOpen] = useState(false);
   const [newHomework, setNewHomework] = useState({
     subject_fk: "",
@@ -61,7 +61,7 @@ export default function Home() {
     fetchHomeworks();
   }, [selectedSubject]);
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: unknown) => {
     setSelectedSubject(event.target.value);
   };
 

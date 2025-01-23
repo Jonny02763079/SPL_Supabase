@@ -21,31 +21,29 @@ const supabase = createClient(
 );
 
 export default function Home() {
-  const [subjects, setSubjects] = useState<any[]>([]); // Fächer
-  const [selectedSubject, setSelectedSubject] = useState<string>(""); // Ausgewähltes Fach
-  const [homeworks, setHomeworks] = useState<any[]>([]); // Hausaufgaben
-  const [open, setOpen] = useState(false); // Dialog-Status
+  const [subjects, setSubjects] = useState<any[]>([]);
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
+  const [homeworks, setHomeworks] = useState<any[]>([]);
+  const [open, setOpen] = useState(false);
   const [newHomework, setNewHomework] = useState({
     subject_fk: "",
     short_description: "",
     content: "",
   });
 
-  // Fetch subjects on initial load
   useEffect(() => {
     async function fetchSubjects() {
       const { data, error } = await supabase.from("subject").select();
       if (error) {
         console.error("Error fetching subjects:", error);
-        setSubjects([]); // Standardwert bei Fehler
+        setSubjects([]);
       } else {
-        setSubjects(data || []); // Standardwert bei `null`
+        setSubjects(data || []);
       }
     }
     fetchSubjects();
   }, []);
 
-  // Fetch homeworks whenever selectedSubject changes
   useEffect(() => {
     async function fetchHomeworks() {
       let query = supabase.from("homework").select("*");
@@ -55,9 +53,9 @@ export default function Home() {
       const { data, error } = await query;
       if (error) {
         console.error("Error fetching homeworks:", error);
-        setHomeworks([]); // Standardwert bei Fehler
+        setHomeworks([]);
       } else {
-        setHomeworks(data || []); // Standardwert bei `null`
+        setHomeworks(data || []);
       }
     }
     fetchHomeworks();
@@ -67,8 +65,8 @@ export default function Home() {
     setSelectedSubject(event.target.value);
   };
 
-  const handleOpen = () => setOpen(true); // Öffne Dialog
-  const handleClose = () => setOpen(false); // Schließe Dialog
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

@@ -61,7 +61,7 @@ export default function Home() {
     fetchHomeworks();
   }, [selectedSubject]);
 
-  const handleChange = (event: unknown) => {
+  const handleChange = (event: any) => {
     setSelectedSubject(event.target.value);
   };
 
